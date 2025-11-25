@@ -1,6 +1,7 @@
 // //
 // * File Imports * //
 import stripMarkdownCodeFence from "../utils/stripFence.js";
+import { getPrompt } from "./prompts.js";
 
 // * External Imports * //
 import * as vscode from "vscode";
@@ -21,7 +22,7 @@ async function setGeneratingState(value) {
 export default async function generateJavadocCommand(uri) {
     if (isGenerating) {
         vscode.window.showInformationMessage(
-            "Javadoc generation is already in progress."
+            "Documentation generation is already in progress."
         );
         return;
     }
@@ -32,19 +33,11 @@ export default async function generateJavadocCommand(uri) {
         uri || (editor && editor.document && editor.document.uri) || undefined;
 
     if (!targetUri) {
-        vscode.window.showErrorMessage("No Java file selected or active.");
+        vscode.window.showErrorMessage("No file selected or active.");
         return;
     }
 
     const document = await vscode.workspace.openTextDocument(targetUri);
-
-    if (
-        document.languageId !== "java" &&
-        !document.fileName.endsWith(".java")
-    ) {
-        vscode.window.showErrorMessage("Selected file is not a Java file.");
-        return;
-    }
 
     const originalText = document.getText();
     if (!originalText.trim()) {
@@ -75,51 +68,12 @@ export default async function generateJavadocCommand(uri) {
     let statusBar;
 
     try {
+        const prompt = getPrompt(document.languageId, originalText, username);
+
         await setGeneratingState(true);
         statusBar = vscode.window.setStatusBarMessage(
-            "$(sparkle) Generating Javadoc…"
+            "$(sparkle) Generating Documentation…"
         );
-
-        const prompt = [
-            "You are a Java documentation assistant.",
-            "Insert Javadoc comments into the provided Java source while preserving behavior and formatting.",
-            "",
-            "Coverage requirements (nothing should be missed):",
-            "- Document every top-level and nested: class, interface, enum (and record/annotation types if present).",
-            "- Document every constructor and every method (all visibilities: public, protected, package-private, private).",
-            "",
-            "For each type (class/interface/enum/record/annotation):",
-            "- Provide a concise summary of purpose and responsibilities.",
-            "- Include @param <T> tags for all type parameters when generics are used.",
-            "",
-            "For each method/constructor:",
-            "- Start with a concise summary sentence.",
-            "- Include @param for each parameter (use meaningful descriptions).",
-            "- Include @return for all non-void methods.",
-            "- Include @throws for each declared exception.",
-            "- Include @param <T> for method type parameters when generics are used.",
-            "- Base descriptions strictly on the code and names; avoid speculation.",
-            "",
-            "Editing rules:",
-            "- Preserve the original code, ordering, identifiers, and behavior.",
-            "- Do not add, remove, or rename any declarations.",
-            "- If @author doesn't exist, include the users name (username)",
-            "- Preserve package/imports and existing formatting/indentation.",
-            "- Place Javadoc immediately above each declaration.",
-            "- If Javadoc already exists, refine/complete it without removing correct information.",
-            "- Do NOT output HTML tags.",
-            "- Output ONLY the full updated Java file content—no explanations, no markdown, no code fences.",
-            "",
-            "Username:",
-            "```",
-            username ? username : "None Provided",
-            "```",
-            "",
-            "Java file:",
-            "```java",
-            originalText,
-            "```",
-        ].join("\n");
 
         const response = await fetch(endpoint, {
             method: "POST",
@@ -133,7 +87,7 @@ export default async function generateJavadocCommand(uri) {
                     {
                         role: "system",
                         content:
-                            "You rewrite Java code by inserting appropriate Javadoc comments while preserving the code behaviour.",
+                            "You rewrite code by inserting appropriate documentation comments while preserving the code behaviour.",
                     },
                     {
                         role: "user",
@@ -146,7 +100,7 @@ export default async function generateJavadocCommand(uri) {
         if (!response.ok) {
             const body = await response.text();
             vscode.window.showErrorMessage(
-                `KU Javadoc: API call failed (${response.status}). See Output panel for details.`
+                `Doc Generator: API call failed (${response.status}). See Output panel for details.`
             );
             const channel = vscode.window.createOutputChannel("doc-generator");
             channel.appendLine(`HTTP ${response.status}`);
@@ -169,7 +123,7 @@ export default async function generateJavadocCommand(uri) {
 
         if (typeof updated !== "string" || !updated.trim()) {
             vscode.window.showErrorMessage(
-                "KU Javadoc: Empty response from model."
+                "Doc Generator: Empty response from model."
             );
             return;
         }
@@ -187,15 +141,19 @@ export default async function generateJavadocCommand(uri) {
         const applied = await vscode.workspace.applyEdit(edit);
 
         if (!applied) {
-            vscode.window.showErrorMessage("KU Javadoc: Failed to apply edit.");
+            vscode.window.showErrorMessage(
+                "Doc Generator: Failed to apply edit."
+            );
             return;
         }
 
         await document.save();
-        vscode.window.showInformationMessage("Javadoc generated successfully.");
+        vscode.window.showInformationMessage(
+            "Documentation generated successfully."
+        );
     } catch (err) {
         vscode.window.showErrorMessage(
-            `KU Javadoc: ${String(err && err.message ? err.message : err)}`
+            `Doc Generator: ${String(err && err.message ? err.message : err)}`
         );
     } finally {
         if (statusBar) {

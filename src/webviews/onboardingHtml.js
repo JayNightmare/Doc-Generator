@@ -27,7 +27,7 @@ export default function getOnboardingHtml(webview, initialValues) {
 <meta charset="UTF-8" />
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource} 'unsafe-inline'; script-src 'nonce-${nonce}'; img-src ${webview.cspSource} https:;" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>KU Javadoc Setup</title>
+<title>Doc Generator Setup</title>
 <style>
 body {
     font-family: var(--vscode-font-family);
@@ -112,7 +112,7 @@ button.secondary {
 </head>
 <body>
 <main>
-    <h1>Finish setting up KU Javadoc</h1>
+    <h1>Finish setting up Doc Generator</h1>
     <p class="description">
         Provide your author details and API credentials once. You can edit these later from VS Code settings.
     </p>

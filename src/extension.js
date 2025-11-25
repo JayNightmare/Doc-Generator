@@ -21,7 +21,7 @@ export function activate(context) {
         "doc-generator.generateFileDocsBusy",
         () => {
             vscode.window.showInformationMessage(
-                "Javadoc generation is already in progress."
+                "Documentation generation is already in progress."
             );
         }
     );
@@ -58,7 +58,7 @@ function openOnboardingPanel(context) {
 
     onboardingPanel = vscode.window.createWebviewPanel(
         "kuJavadocSetup",
-        "KU Javadoc Setup",
+        "Doc Generator Setup",
         vscode.ViewColumn.One,
         {
             enableScripts: true,
@@ -118,7 +118,9 @@ async function handleOnboardingMessage(message, panel) {
         });
 
         if (result.success) {
-            vscode.window.showInformationMessage("KU Javadoc settings saved.");
+            vscode.window.showInformationMessage(
+                "Doc Generator settings saved."
+            );
         }
         return;
     }
@@ -177,7 +179,7 @@ async function promptForSetupIfNeeded() {
     }
 
     const selection = await vscode.window.showInformationMessage(
-        "Provide your OpenRouter API key to finish setting up KU Javadoc.",
+        "Provide your OpenRouter API key to finish setting up Doc Generator.",
         "Open setup",
         "Dismiss"
     );
