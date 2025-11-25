@@ -2,7 +2,7 @@
     "name": "doc-generator",
     "displayName": "Doc Generator",
     "description": "Doc Generator to explain the file",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "type": "module",
     "engines": {
         "vscode": "^1.106.1"
