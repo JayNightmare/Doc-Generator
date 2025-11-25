@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Doc Generator - VS Code Extension</h1>
-  <p>Doc Generator is a Visual Studio Code extension that generates documentation comments for Java files using an AI model.</p>
+  <p>Doc Generator is a Visual Studio Code extension that generates documentation comments for files using an AI model.</p>
   <div>
 
 ---
@@ -93,7 +93,7 @@ The extension uses different configurations for different languages; The prompts
 ---
 
 ## Known Issues
-- The extension relies on the AI model's understanding of Java; results may vary based on the model's capabilities.
+- The extension relies on the AI model's understanding of the file; results may vary based on the model's capabilities.
   - I recommend testing with small files first to verify quality
   - and also using the default model provided.
 - Pressing the "Generate documentation for File" command repeatedly in quick succession causes file "corruption" (e.g., missing code sections due to the model replacing lines that don't exist).
