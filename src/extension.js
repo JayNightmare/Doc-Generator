@@ -57,7 +57,7 @@ function openOnboardingPanel(context) {
     }
 
     onboardingPanel = vscode.window.createWebviewPanel(
-        "kuJavadocSetup",
+        "doc-generatorSetup",
         "Doc Generator Setup",
         vscode.ViewColumn.One,
         {

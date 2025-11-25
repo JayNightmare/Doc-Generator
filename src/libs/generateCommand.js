@@ -7,7 +7,7 @@ import { getPrompt } from "./prompts.js";
 import * as vscode from "vscode";
 // //
 
-export const GENERATING_CONTEXT_KEY = "kuJavadoc.generating";
+export const GENERATING_CONTEXT_KEY = "doc-generator.generating";
 let isGenerating = false;
 
 async function setGeneratingState(value) {
