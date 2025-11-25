@@ -2,6 +2,26 @@
 
 All notable changes to the "doc-generator" extension will be documented in this file.
 
+## [0.0.8] - 25/11/2025
+- **Major Update**: Forked from "KU Javadoc" and renamed to "Doc Generator".
+- Added support for multiple languages:
+  - Java (Javadoc)
+  - JavaScript (JSDoc)
+  - TypeScript (TSDoc/JSDoc)
+  - Python (Docstrings)
+  - C# (XML Documentation)
+- Implemented automatic language detection to select the appropriate documentation style.
+- Refactored codebase to support dynamic prompts based on the active file's language.
+- Updated UI strings and commands to reflect the new name and broader capabilities.
+
+---
+
+<div align="center">
+  <em>Previous changelog entries are preserved below for historical reference. Based on the KU Javadoc extension.</em>
+</div>
+
+---
+
 ## [0.0.5] - 19/11/2025
 - Added "KU Javadoc: Open Setup" walkthrough entry and welcome view so new users can find the guided experience.
 - Introduced onboarding webview with validation for name, API key, endpoint, and model plus quick link to OpenRouter keys.
