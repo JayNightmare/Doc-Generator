@@ -1,0 +1,179 @@
+{
+    "name": "doc-generator",
+    "displayName": "KU Javadoc",
+    "description": "java doc for Kingston University",
+    "version": "0.0.5",
+    "type": "module",
+    "engines": {
+        "vscode": "^1.106.1"
+    },
+    "categories": [
+        "Other"
+    ],
+    "icon": "./src/images/public/doc-generator.png",
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./src/extension.js",
+    "author": "Jay",
+    "publisher": "JayNightmare",
+    "repository": {
+        "type": "git",
+        "repo": "https://github.com/JayNightmare/doc-generator-Generator"
+    },
+    "license": "MIT",
+    "contributes": {
+        "commands": [
+            {
+                "command": "doc-generator.helloWorld",
+                "title": "Hello World"
+            },
+            {
+                "command": "doc-generator.openOnboarding",
+                "title": "KU Javadoc: Open Setup",
+                "category": "doc-generator"
+            },
+            {
+                "command": "doc-generator.generateFileDocs",
+                "title": "Generate Javadoc for File",
+                "category": "doc-generator",
+                "icon": {
+                    "dark": "./src/images/tools/doc/dark/dark-audit.png",
+                    "light": "./src/images/tools/doc/light/light-audit.png"
+                },
+                "enablement": "!kuJavadoc.generating"
+            },
+            {
+                "command": "doc-generator.generateFileDocsBusy",
+                "title": "Generating Javadoc…",
+                "category": "doc-generator",
+                "icon": {
+                    "dark": "./src/images/tools/gen/dark/dark-writing.png",
+                    "light": "./src/images/tools/gen/light/light-writing.png"
+                },
+                "enablement": "kuJavadoc.generating"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "command": "doc-generator.generateFileDocs",
+                    "group": "navigation@9",
+                    "when": "resourceExtname == .java && !kuJavadoc.generating"
+                },
+                {
+                    "command": "doc-generator.generateFileDocsBusy",
+                    "group": "navigation@9",
+                    "when": "resourceExtname == .java && kuJavadoc.generating"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "doc-generator.generateFileDocs",
+                    "group": "navigation@9",
+                    "when": "resourceExtname == .java && !kuJavadoc.generating"
+                },
+                {
+                    "command": "doc-generator.generateFileDocsBusy",
+                    "group": "navigation@9",
+                    "when": "resourceExtname == .java && kuJavadoc.generating"
+                }
+            ],
+            "editor/title": [
+                {
+                    "command": "doc-generator.generateFileDocs",
+                    "group": "navigation@9",
+                    "when": "resourceExtname == .java && !kuJavadoc.generating"
+                },
+                {
+                    "command": "doc-generator.generateFileDocsBusy",
+                    "group": "navigation@9",
+                    "when": "resourceExtname == .java && kuJavadoc.generating"
+                }
+            ],
+            "commandPalette": [
+                {
+                    "command": "doc-generator.openOnboarding"
+                },
+                {
+                    "command": "doc-generator.generateFileDocs",
+                    "when": "!kuJavadoc.generating"
+                },
+                {
+                    "command": "doc-generator.generateFileDocsBusy",
+                    "when": "kuJavadoc.generating"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "KU Javadoc",
+            "properties": {
+                "doc-generator.name": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Enter your name (this will be used for the @author tag)",
+                    "scope": "application"
+                },
+                "doc-generator.apiKey": {
+                    "type": "string",
+                    "description": "API key for the LLM used to generate Javadoc",
+                    "scope": "application",
+                    "password": true
+                },
+                "doc-generator.model": {
+                    "type": "string",
+                    "default": "llama-3.1-8b-instant",
+                    "description": "Model name to use for Javadoc generation",
+                    "scope": "application"
+                },
+                "doc-generator.endpoint": {
+                    "type": "string",
+                    "default": "https://api.groq.com/openai/v1/chat/completions",
+                    "description": "OpenAI-compatible chat completions endpoint URL",
+                    "scope": "application"
+                }
+            }
+        },
+        "walkthroughs": [
+            {
+                "id": "doc-generator.walkthrough",
+                "title": "Get started with KU Javadoc",
+                "description": "Configure your API access once and start generating documentation from any Java file.",
+                "steps": [
+                    {
+                        "id": "doc-generator.walkthrough.setup",
+                        "title": "Configure API access",
+                        "description": "Provide your name, OpenRouter API key, endpoint, and preferred model using the guided setup. [Open setup](command:doc-generator.openOnboarding)",
+                        "media": {
+                            "image": "./src/images/public/doc-generator.png",
+                            "altText": "KU Javadoc icon"
+                        }
+                    }
+                ]
+            }
+        ],
+        "viewsWelcome": [
+            {
+                "view": "workbench.explorer.fileView",
+                "contents": "Start generating Javadoc faster by configuring KU Javadoc. [Open setup](command:doc-generator.openOnboarding)"
+            }
+        ]
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^10.0.10",
+        "@types/node": "22.x",
+        "@types/vscode": "^1.106.1",
+        "@vscode/test-cli": "^0.0.12",
+        "@vscode/test-electron": "^2.5.2",
+        "eslint": "^9.39.1"
+    },
+    "dependencies": {
+        "node-fetch": "^3.3.2",
+        "vsce": "^2.15.0"
+    }
+}
