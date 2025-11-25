@@ -116,14 +116,14 @@
                 },
                 "doc-generator.apiKey": {
                     "type": "string",
-                    "description": "API key for the LLM used to generate Javadoc",
+                    "description": "API key for the LLM used to generate documentation",
                     "scope": "application",
                     "password": true
                 },
                 "doc-generator.model": {
                     "type": "string",
-                    "default": "openrouter/sherlock-think-alpha",
-                    "description": "Model name to use for Javadoc generation",
+                    "default": "",
+                    "description": "Model name to use for documentation generation",
                     "scope": "application"
                 },
                 "doc-generator.endpoint": {

@@ -136,6 +136,7 @@ button.secondary {
             <label for="model">Model</label>
             <input id="model" name="model" type="text" />
             <small>Pick any OpenRouter-supported model.</small>
+            <small>Get a model at <a href="https://openrouter.ai/models?order=pricing-low-to-high" target="_blank" rel="noopener">openrouter.ai</a>.</small>
         </div>
         <div class="actions">
             <button class="primary" type="submit" id="save-btn">Save settings</button>
